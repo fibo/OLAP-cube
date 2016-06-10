@@ -11,6 +11,11 @@
     "postversion": "git push origin v${npm_package_version}; npm publish; git push origin master",
     "test": "NODE_PATH=. tape test/**/*.js"
   },
+  "pre-commit": [
+    "lint",
+    "test",
+    "check-deps"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fibo/OLAP-cube.git"
@@ -26,7 +31,10 @@
     "report",
     "business-intelligence"
   ],
-  "author": "",
+  "author": {
+    "name": "Gianluca Casati",
+    "url": "http://g14n.info"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/fibo/OLAP-cube/issues"

@@ -16,11 +16,6 @@
 An [OLAP cube][OLAP_cube] is a multidimensional array of data you can
 explore and analyze. Here you will find an engine and a graphic viewer.
 
-### Features
-
-* Everything is immutable
-* Chainable interface
-
 ## Installation
 
 With [npm] do
@@ -32,6 +27,10 @@ npm install olap-cube
 ## API
 
 All code in this section is run and tested in [this single file][test_api].
+Note also that
+
+1. Everything is immutable
+2. Interface is chainable
 
 ### `new Table({ dimensions, fields, points, data })`
 
@@ -62,6 +61,18 @@ console.log(emptyTable) // Table {
                         //   dimensions: ['year', 'month'],
                         //   fields: ['revenue']
                         // }
+```
+
+### `table.dimensions`
+
+```javascripts
+console.log(table.dimensions) // [ 'year', 'month' ]
+```
+
+### `table.fields`
+
+```javascripts
+console.log(table.fields) // [ 'revenue' ]
 ```
 
 ### `table.addRows([row1, row2, ...])`

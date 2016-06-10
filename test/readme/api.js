@@ -11,6 +11,8 @@ test('README API', (t) => {
   })
 
   console.log(table)
+  console.log(table.dimensions)
+  console.log(table.fields)
 
   var emptyTable = new Table(table.structure)
 

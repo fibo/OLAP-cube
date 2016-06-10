@@ -33,7 +33,7 @@ class Table {
    * @param {Array} arg.dimensions
    * @param {Array} arg.points
    * @param {Array} arg.fields
-   * @param {Array} arg.data
+   * @param {Array} arg.data in the format data[pointIndex][fieldIndex]
    */
   constructor () {
     // Assign default arguments.
@@ -81,16 +81,45 @@ class Table {
    */
 
   addRows (rows) {
+    let data = Object.assign([], this.data)
+    let points = Object.assign([], this.points)
+
     rows.forEach((row) => {
-      console.log(row)
-    /*
-      for (key in row) {
-        if (key in dimensions) {
-          console.log('dimension:', row[key])
-        }
+      let point = []
+      let fields = []
+
+      if (Object.keys(row).length !== (this.dimensions.length + this.points.length)) {
+        throw new TypeError('invalid row', row)
       }
-    */
+
+      for (let key in row) {
+        let dimIndex = this.dimensions.indexOf(key)
+        let fieldIndex = this.fields.indexOf(key)
+
+        if (dimIndex > -1) {
+          var dim = row[key]
+          point.splice(dimIndex, 0, dim)
+        } else if (fieldIndex > -1) {
+          var field = row[key]
+          fields.splice(fieldIndex, 0, field)
+        } else {
+          throw new TypeError('invalid row', row)
+        }
+
+        // TODO create a slice for every point added
+        // points.push(point)
+        // slice.push(fields)
+        // data.push(slice)
+      }
     })
+
+    return new Table(
+      Object.assign(
+        {},
+        this.structure,
+        { data }
+      )
+    )
   }
 }
 
