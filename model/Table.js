@@ -3,6 +3,8 @@
 var staticProps = require('static-props')
 
 /**
+ * OLAP table, a.k.a. cube of data.
+ *
  * An OLAP cube table is a multidimensional array of data.
  * It extends an ordinary table by adding dimensions that are
  * nothing more than special fields. If in a flat database table
@@ -15,10 +17,13 @@ var staticProps = require('static-props')
  *
  * probably it is a dimension and you don't need to repeat it on
  * each row.
+ *
+ * @class
  */
 
 class Table {
   /**
+   * Create an OLAP table.
    *
    * ```
    * var table = new Table({
@@ -64,6 +69,8 @@ class Table {
       if (data.length !== points.length) throw new TypeError('orphan slices', data)
     }
 
+    // Set immutable attributes.
+
     var enumerable = true
     staticProps(this)({ dimensions, fields }, enumerable)
 
@@ -78,6 +85,7 @@ class Table {
    * Every row is an object whose keys are either a dimension or a field.
    *
    * @param {Array} rows
+   * @returns {Object} table
    */
 
   addRows (rows) {
@@ -131,10 +139,44 @@ class Table {
       Object.assign(
         {},
         this.structure,
-        {
-          points,
-          data
-        }
+        { points, data }
+      )
+    )
+  }
+
+  /**
+   * Slice operator picks a rectangular subset of a cube by choosing a single
+   * value of its dimensions.
+   *
+   * @param {String} dimension
+   * @param {*} filter
+   * @returns {Object} table
+   */
+
+  slice (dimension, filter) {
+    const structure = this.structure
+    let points = []
+    let data = []
+
+    const dimensionIndex = structure.dimensions.indexOf(dimension)
+
+    if (dimensionIndex === -1) {
+      throw new TypeError('dimension not found', dimension)
+    }
+
+    this.points.forEach((point, i) => {
+      // Add slice if it matches given filter.
+      if (point[dimensionIndex] === filter) {
+        data.push(this.data[i])
+        points.push(this.points[i])
+      }
+    })
+
+    return new Table(
+      Object.assign(
+        {},
+        structure,
+        { points, data }
       )
     )
   }
