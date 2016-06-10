@@ -1,0 +1,43 @@
+{
+  "name": "olap-cube",
+  "version": "0.0.0",
+  "description": "is an hypercube of data",
+  "main": "olap-cube.js",
+  "scripts": {
+    "check-deps": "npm outdated",
+    "lint": "standard",
+    "update-deps": "npm update --save --dev",
+    "postupdate-deps": "npm test && git commit -am ':arrow_up: updated deps' || git checkout -- package.json",
+    "postversion": "git push origin v${npm_package_version}; npm publish; git push origin master",
+    "test": "NODE_PATH=. tape test/**/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fibo/OLAP-cube.git"
+  },
+  "keywords": [
+    "olap",
+    "data",
+    "pivot",
+    "table",
+    "cube",
+    "data-warehouse",
+    "dwh",
+    "report",
+    "business-intelligence"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fibo/OLAP-cube/issues"
+  },
+  "homepage": "https://github.com/fibo/OLAP-cube#readme",
+  "devDependencies": {
+    "pre-commit": "^1.1.3",
+    "standard": "^7.1.2",
+    "tape": "^4.5.1"
+  },
+  "dependencies": {
+    "static-props": "^1.0.0"
+  }
+}
