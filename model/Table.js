@@ -1,3 +1,5 @@
+'use strict'
+
 var staticProps = require('static-props')
 
 /**
@@ -33,38 +35,62 @@ class Table {
    * @param {Array} arg.fields
    * @param {Array} arg.data
    */
-  constructor (arg) {
+  constructor () {
     // Assign default arguments.
 
-    var {
-      dimensions,
-      points,
-      fields,
-      data
-    } = Object.assign({
+    const arg = Object.assign({
       dimensions: [],
       points: [[]],
       fields: [],
       data: [[[]]]
-    }, arg)
+    }, arguments[0])
+
+    const dimensions = arg.dimensions
+    const points = arg.points
+    const fields = arg.fields
+    const data = arg.data
 
     // Check arguments are consistent with multidim table structure.
-
-    var invalidPoints = points.filter((p) => p.length !== dimensions.length)
-    if (invalidPoints.length > 0) throw new TypeError('invalid points', invalidPoints)
-
-    if (data.length !== points.length) throw new TypeError('orphan slices')
 
     var tableHasData = data.length.length > 0
 
     if (tableHasData) {
       var invalidSlices = data.filter((slice) => slice.length !== fields.length)
       if (invalidSlices.length > 0) throw new TypeError('invalid slices', invalidSlices)
+
+      var invalidPoints = points.filter((p) => p.length !== dimensions.length)
+      if (invalidPoints.length > 0) throw new TypeError('invalid points', invalidPoints)
+
+      if (data.length !== points.length) throw new TypeError('orphan slices')
     }
 
     var enumerable = true
     staticProps(this)({ dimensions, fields }, enumerable)
-    staticProps(this)({ points, data })
+
+    staticProps(this)({
+      points,
+      data,
+      structure: { dimensions, fields }
+    })
+  }
+
+  /**
+   * Every row is an object whose keys are either a dimension or a field.
+   *
+   * @param {Array} rows
+   */
+
+  addRows (rows) {
+    rows.forEach((row) => {
+      console.log(row)
+    /*
+      for (key in row) {
+        if (key in dimensions) {
+          console.log('dimension:', row[key])
+        }
+      }
+    */
+    })
   }
 }
 
