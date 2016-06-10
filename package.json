@@ -39,7 +39,7 @@
   "bugs": {
     "url": "https://github.com/fibo/OLAP-cube/issues"
   },
-  "homepage": "https://github.com/fibo/OLAP-cube#readme",
+  "homepage": "http://npm.im/olap-cube",
   "devDependencies": {
     "deep-freeze": "0.0.1",
     "pre-commit": "^1.1.3",

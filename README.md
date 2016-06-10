@@ -29,8 +29,8 @@ npm install olap-cube
 All code in this section is run and tested in [this single file][test_api].
 Note also that
 
-1. Everything is immutable
-2. Interface is chainable
+1. Everything is immutable, all attributes are static.
+2. Operators are chainable but they always return a brand new instance.
 
 ### `new Table({ dimensions, fields, points, data })`
 
@@ -62,11 +62,16 @@ var emptyTable = new Table(table.structure)
 
 ### `table.dimensions`
 
+They are the cube dimensions. One common dimension in [Business Intelligence][Business_intelligence]
+is time: it can have different granularities, like *year*, *month*, *day*, etc.
+
 ```javascripts
 console.log(table.dimensions) // [ 'year', 'month' ]
 ```
 
 ### `table.fields`
+
+They are the name of the data fields.
 
 ```javascripts
 console.log(table.fields) // [ 'revenue' ]
@@ -74,6 +79,7 @@ console.log(table.fields) // [ 'revenue' ]
 
 ### `table.addRows([row1, row2, ...])`
 
+Add a set of rows to the table.
 Every row is an object which attributes are either a dimension or a field.
 
 ```javascripts
@@ -88,6 +94,8 @@ var table2 = emptyTable.addRows([
 
 ### `table.data`
 
+Attribute data holds the rows of the table.
+
 ```javascripts
 console.log(table2.data) // [[ 80 ],
                          //  [ 90 ],
@@ -98,6 +106,12 @@ console.log(table2.data) // [[ 80 ],
 
 ### `table.points`
 
+The points are an ordered set of coordinates.
+In this case you can see 5 points with coordinates:
+
+1. year
+2. month
+
 ```javascripts
 console.log(table2.points) // [[ 2015, 'Nov' ],
                            //  [ 2015, 'Dec' ],
@@ -107,6 +121,11 @@ console.log(table2.points) // [[ 2015, 'Nov' ],
 ```
 
 ### `table.slice(dimension, table)`
+
+Slice operator picks a rectangular subset of a cube by choosing a single value
+of its dimensions.
+
+Consider the following example, where a slice with 2016 year is created.
 
 ```javascripts
 var table3 = table2.slice('year', 2016)
@@ -127,3 +146,4 @@ console.log(table3.data) // [[ 100 ],
 [OLAP_cube]: https://en.wikipedia.org/wiki/OLAP_cube "OLAP cube"
 [npm]: https://npmjs.com "npm"
 [test_api]: https://github.com/fibo/OLAP-cube/blob/master/test/readme/api.js "test API"
+[Business_intelligence]: https://en.wikipedia.org/wiki/Business_intelligence "Business Intellicence"
