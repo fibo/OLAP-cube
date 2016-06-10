@@ -25,7 +25,7 @@ class Table {
    *   dimensions: [ 'year', 'month' ],
    *   points: [ [2016, 'Gen'], [2016, 'Feb'], [2016, 'Mar'] ],
    *   fields: ['revenue'],
-   *   data: [[[100]], [[170]], [[280]]]
+   *   data: [[100], [170], [280]]
    * })
    * ```
    *
@@ -40,9 +40,9 @@ class Table {
 
     const arg = Object.assign({
       dimensions: [],
-      points: [[]],
+      points: [],
       fields: [],
-      data: [[[]]]
+      data: []
     }, arguments[0])
 
     const dimensions = arg.dimensions
@@ -52,7 +52,7 @@ class Table {
 
     // Check arguments are consistent with multidim table structure.
 
-    var tableHasData = data.length.length > 0
+    const tableHasData = data.length > 0
 
     if (tableHasData) {
       var invalidSlices = data.filter((slice) => slice.length !== fields.length)
@@ -61,7 +61,7 @@ class Table {
       var invalidPoints = points.filter((p) => p.length !== dimensions.length)
       if (invalidPoints.length > 0) throw new TypeError('invalid points', invalidPoints)
 
-      if (data.length !== points.length) throw new TypeError('orphan slices')
+      if (data.length !== points.length) throw new TypeError('orphan slices', data)
     }
 
     var enumerable = true
@@ -81,43 +81,60 @@ class Table {
    */
 
   addRows (rows) {
+    const dimensions = this.dimensions
+    const fields = this.fields
+
     let data = Object.assign([], this.data)
     let points = Object.assign([], this.points)
 
     rows.forEach((row) => {
       let point = []
-      let fields = []
+      let cells = []
 
-      if (Object.keys(row).length !== (this.dimensions.length + this.points.length)) {
+      if (Object.keys(row).length !== (dimensions.length + fields.length)) {
         throw new TypeError('invalid row', row)
       }
 
       for (let key in row) {
-        let dimIndex = this.dimensions.indexOf(key)
-        let fieldIndex = this.fields.indexOf(key)
+        let dimIndex = dimensions.indexOf(key)
+        let fieldIndex = fields.indexOf(key)
 
         if (dimIndex > -1) {
           var dim = row[key]
           point.splice(dimIndex, 0, dim)
         } else if (fieldIndex > -1) {
           var field = row[key]
-          fields.splice(fieldIndex, 0, field)
+          cells.splice(fieldIndex, 0, field)
         } else {
           throw new TypeError('invalid row', row)
         }
-
-        // TODO create a slice for every point added
-        // points.push(point)
-        // slice.push(fields)
-        // data.push(slice)
       }
+
+      let pointIndex = null
+      points.forEach((p, index) => {
+        if (p.filter((coord, i) => coord === point[i]).length === point.length) {
+          // Found point.
+          pointIndex = index
+        }
+      })
+
+      if (pointIndex === null) {
+        // No point was found, let's add it
+        pointIndex = points.length
+        points.push(point)
+      }
+
+      data.splice(pointIndex, 0, cells)
     })
 
     return new Table(
       Object.assign(
         {},
         this.structure,
-        { data }
+        {
+          points,
+          data
+        }
       )
     )
   }
