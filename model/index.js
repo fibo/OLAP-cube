@@ -84,11 +84,17 @@ class Table {
   /**
    * Every row is an object whose keys are either a dimension or a field.
    *
-   * @param {Array} rows
+   * @param {Object} data
+   * @param {Object} data.header
+   * @param {Array} data.rows
    * @returns {Object} table
    */
 
-  addRows (rows) {
+  addRows ({ header, rows }) {
+    if (header.length !== (dimensions.length + fields.length)) {
+      throw new TypeError('invalid row', row)
+    }
+
     const dimensions = this.dimensions
     const fields = this.fields
 
@@ -99,13 +105,9 @@ class Table {
       let point = []
       let cells = []
 
-      if (Object.keys(row).length !== (dimensions.length + fields.length)) {
-        throw new TypeError('invalid row', row)
-      }
-
-      for (let key in row) {
-        let dimIndex = dimensions.indexOf(key)
-        let fieldIndex = fields.indexOf(key)
+      for (let i in row) {
+        let dimIndex = dimensions.indexOf(header[i])
+        let fieldIndex = fields.indexOf(header[i])
 
         if (dimIndex > -1) {
           var dim = row[key]

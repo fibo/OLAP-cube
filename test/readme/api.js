@@ -16,13 +16,16 @@ test('README API', (t) => {
 
   var emptyTable = new Table(table.structure)
 
-  var table2 = emptyTable.addRows([
-    { year: 2015, month: 'Nov', revenue: 80 },
-    { year: 2015, month: 'Dec', revenue: 90 },
-    { year: 2016, month: 'Jan', revenue: 100 },
-    { year: 2016, month: 'Feb', revenue: 170 },
-    { year: 2016, month: 'Mar', revenue: 280 }
-  ])
+  var table2 = emptyTable.addRows({
+    header: [ 'year', 'month', 'revenue' ],
+    rows: [
+      [ 2015, 'Nov', 80 ],
+      [ 2015, 'Dec', 90 ],
+      [ 2016, 'Jan', 100 ],
+      [ 2016, 'Feb', 170 ],
+      [ 2016, 'Mar', 280 ]
+    ]
+  })
 
   t.deepEqual(table2.data, [[ 80 ],
                             [ 90 ],

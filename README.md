@@ -77,19 +77,22 @@ They are the name of the data fields.
 console.log(table.fields) // [ 'revenue' ]
 ```
 
-### `table.addRows([row1, row2, ...])`
+### `table.addRows({ header: [key1, key2, ...], rows: [row1, row2, ...]})`
 
 Add a set of rows to the table.
 Every row is an object which attributes are either a dimension or a field.
 
 ```javascripts
-var table2 = emptyTable.addRows([
-  { year: 2015, month: 'Nov', revenue: 80 },
-  { year: 2015, month: 'Dec', revenue: 90 },
-  { year: 2016, month: 'Jan', revenue: 100 },
-  { year: 2016, month: 'Feb', revenue: 170 },
-  { year: 2016, month: 'Mar', revenue: 280 }
-])
+var table2 = emptyTable.addRows({
+  header: [ 'year', 'month', 'revenue' ],
+  rows: [
+    [ 2015, 'Nov', 80 ],
+    [ 2015, 'Dec', 90 ],
+    [ 2016, 'Jan', 100 ],
+    [ 2016, 'Feb', 170 ],
+    [ 2016, 'Mar', 280 ]
+  ]
+})
 ```
 
 ### `table.data`
