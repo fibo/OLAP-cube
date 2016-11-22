@@ -6,8 +6,6 @@
   "scripts": {
     "check-deps": "npm outdated",
     "lint": "standard",
-    "update-deps": "npm update --save --dev",
-    "postupdate-deps": "npm test && git commit -am ':arrow_up: updated deps' || git checkout -- package.json",
     "postversion": "git push origin v${npm_package_version}; npm publish; git push origin master",
     "test": "NODE_PATH=. tape test/**/*.js"
   },
