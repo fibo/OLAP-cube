@@ -10,13 +10,12 @@ test('README API', (t) => {
     data: [[100]]
   })
 
-  console.log(table)
-  t.deepEqual(table.dimensions, ['year', 'month'], 'dimensions')
-  t.deepEqual(table.fields, ['revenue'], 'fields')
+  t.deepEqual(table.dimensions, ['year', 'month'], 'table.dimensions')
+  t.deepEqual(table.fields, ['revenue'], 'table.fields')
 
-  var emptyTable = new Table(table.structure)
+  const emptyTable = new Table(table.structure)
 
-  var table2 = emptyTable.addRows({
+  const table2 = emptyTable.addRows({
     header: [ 'year', 'month', 'revenue' ],
     rows: [
       [ 2015, 'Nov', 80 ],

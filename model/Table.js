@@ -60,18 +60,25 @@ class Table {
     const tableHasData = data.length > 0
 
     if (tableHasData) {
-      var invalidSlices = data.filter((slice) => slice.length !== fields.length)
-      if (invalidSlices.length > 0) throw new TypeError('invalid slices', invalidSlices)
+      const invalidSlices = data.filter((slice) => slice.length !== fields.length)
 
-      var invalidPoints = points.filter((p) => p.length !== dimensions.length)
-      if (invalidPoints.length > 0) throw new TypeError('invalid points', invalidPoints)
+      if (invalidSlices.length > 0) {
+        throw new TypeError('invalid slices')
+      }
 
-      if (data.length !== points.length) throw new TypeError('orphan slices', data)
+      const invalidPoints = points.filter((p) => p.length !== dimensions.length)
+      if (invalidPoints.length > 0) {
+        throw new TypeError('invalid points')
+      }
+
+      if (data.length !== points.length) {
+        throw new TypeError('orphan slices')
+      }
     }
 
     // Set immutable attributes.
 
-    var enumerable = true
+    const enumerable = true
     staticProps(this)({ dimensions, fields }, enumerable)
 
     staticProps(this)({
@@ -85,38 +92,40 @@ class Table {
    * Every row is an object whose keys are either a dimension or a field.
    *
    * @param {Object} data
-   * @param {Object} data.header
+   * @param {Array} data.header
    * @param {Array} data.rows
    * @returns {Object} table
    */
 
-  addRows ({ header, rows }) {
-    if (header.length !== (dimensions.length + fields.length)) {
-      throw new TypeError('invalid row', row)
-    }
+  addRows (arg) {
+    const header = arg.header
+    const rows = arg.rows
 
     const dimensions = this.dimensions
     const fields = this.fields
 
-    let data = Object.assign([], this.data)
-    let points = Object.assign([], this.points)
+    if (header.length !== (dimensions.length + fields.length)) {
+      throw new TypeError('invalid header')
+    }
+
+    var data = Object.assign([], this.data)
+    var points = Object.assign([], this.points)
 
     rows.forEach((row) => {
-      let point = []
-      let cells = []
+      var point = []
+      var cells = []
 
       for (let i in row) {
-        let dimIndex = dimensions.indexOf(header[i])
-        let fieldIndex = fields.indexOf(header[i])
+        const key = header[i]
+        let dimIndex = dimensions.indexOf(key)
+        let fieldIndex = fields.indexOf(key)
 
         if (dimIndex > -1) {
-          var dim = row[key]
-          point.splice(dimIndex, 0, dim)
+          point.splice(dimIndex, 0, row[i])
         } else if (fieldIndex > -1) {
-          var field = row[key]
-          cells.splice(fieldIndex, 0, field)
+          cells.splice(fieldIndex, 0, row[i])
         } else {
-          throw new TypeError('invalid row', row)
+          throw new TypeError('invalid row')
         }
       }
 
@@ -138,11 +147,7 @@ class Table {
     })
 
     return new Table(
-      Object.assign(
-        {},
-        this.structure,
-        { points, data }
-      )
+      Object.assign({}, this.structure, { points, data })
     )
   }
 
@@ -175,11 +180,7 @@ class Table {
     })
 
     return new Table(
-      Object.assign(
-        {},
-        structure,
-        { points, data }
-      )
+      Object.assign({}, structure, { points, data })
     )
   }
 }

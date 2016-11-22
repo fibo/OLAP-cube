@@ -2,7 +2,7 @@
 
 > is an hypercube of data
 
-[![NPM version](https://badge.fury.io/js/OLAP-cube.svg)](http://badge.fury.io/js/OLAP-cube) [![Build Status](https://travis-ci.org/fibo/OLAP-cube.svg?branch=master)](https://travis-ci.org/fibo/OLAP-cube?branch=master) [![Dependency Status](https://david-dm.org/fibo/OLAP-cube.svg)](https://david-dm.org/fibo/OLAP-cube)
+[![NPM version](https://badge.fury.io/js/olap-cube.svg)](http://badge.fury.io/js/olap-cube) [![Build Status](https://travis-ci.org/fibo/OLAP-cube.svg?branch=master)](https://travis-ci.org/fibo/OLAP-cube?branch=master) [![Dependency Status](https://david-dm.org/fibo/OLAP-cube.svg)](https://david-dm.org/fibo/OLAP-cube)
 
 [![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
@@ -57,7 +57,7 @@ Holds necessary information to clone a table excluding its data.
 Create an empty table
 
 ```javascripts
-var emptyTable = new Table(table.structure)
+const emptyTable = new Table(table.structure)
 ```
 
 ### `table.dimensions`
@@ -83,7 +83,7 @@ Add a set of rows to the table.
 Every row is an object which attributes are either a dimension or a field.
 
 ```javascripts
-var table2 = emptyTable.addRows({
+const table2 = emptyTable.addRows({
   header: [ 'year', 'month', 'revenue' ],
   rows: [
     [ 2015, 'Nov', 80 ],
