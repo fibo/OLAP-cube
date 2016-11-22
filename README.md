@@ -35,9 +35,9 @@ Note also that
 ### `new Table({ dimensions, fields, points, data })`
 
 ```javascripts
-var Table = require('olap-cube').model.Table
+const Table = require('olap-cube').model.Table
 
-var table = new Table({
+const table = new Table({
   dimensions: ['year', 'month'],
   fields: ['revenue'],
   points: [[2016, 'Gen']],
@@ -52,7 +52,7 @@ console.log(table) // Table {
 
 ### `table.structure`
 
-Holds necessary information to clone a table excluding its data.
+> Holds necessary information to clone a table excluding its data.
 
 Create an empty table
 
@@ -62,8 +62,10 @@ const emptyTable = new Table(table.structure)
 
 ### `table.dimensions`
 
-They are the cube dimensions. One common dimension in [Business Intelligence][Business_intelligence]
-is time: it can have different granularities, like *year*, *month*, *day*, etc.
+> The (hyper)cube dimensions.
+
+One common dimension in [Business Intelligence][Business_intelligence]
+is **time**: it can have different granularities, like *year*, *month*, *day*, etc.
 
 ```javascripts
 console.log(table.dimensions) // [ 'year', 'month' ]
@@ -71,7 +73,7 @@ console.log(table.dimensions) // [ 'year', 'month' ]
 
 ### `table.fields`
 
-They are the name of the data fields.
+> The names of the data fields.
 
 ```javascripts
 console.log(table.fields) // [ 'revenue' ]
@@ -79,7 +81,8 @@ console.log(table.fields) // [ 'revenue' ]
 
 ### `table.addRows({ header: [key1, key2, ...], rows: [row1, row2, ...]})`
 
-Add a set of rows to the table.
+> Add a set of rows to the table.
+
 Every row is an object which attributes are either a dimension or a field.
 
 ```javascripts
@@ -90,27 +93,30 @@ const table2 = emptyTable.addRows({
     [ 2015, 'Dec', 90 ],
     [ 2016, 'Jan', 100 ],
     [ 2016, 'Feb', 170 ],
-    [ 2016, 'Mar', 280 ]
+    [ 2016, 'Mar', 280 ],
+    [ 2017, 'Apr', 410 ]
   ]
 })
 ```
 
 ### `table.data`
 
-Attribute data holds the rows of the table.
+> Attribute data holds the rows of the table.
 
 ```javascripts
 console.log(table2.data) // [[ 80 ],
                          //  [ 90 ],
                          //  [ 100 ],
                          //  [ 170 ],
-                         //  [ 280 ]]
+                         //  [ 280 ],
+                         //  [ 410 ]]
 ```
 
 ### `table.points`
 
-The points are an ordered set of coordinates.
-In this case you can see 5 points with coordinates:
+> The *points* are an ordered set of coordinates.
+
+In this case you can see 6 points with coordinates:
 
 1. year
 2. month
@@ -120,13 +126,13 @@ console.log(table2.points) // [[ 2015, 'Nov' ],
                            //  [ 2015, 'Dec' ],
                            //  [ 2016, 'Jan' ],
                            //  [ 2016, 'Feb' ],
-                           //  [ 2016, 'Mar' ]]
+                           //  [ 2016, 'Feb' ],
+                           //  [ 2017, 'Apr' ]]
 ```
 
 ### `table.slice(dimension, table)`
 
-Slice operator picks a rectangular subset of a cube by choosing a single value
-of its dimensions.
+> Slice operator picks a rectangular subset of a cube by choosing a single value of its dimensions.
 
 Consider the following example, where a slice with 2016 year is created.
 
