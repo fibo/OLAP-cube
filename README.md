@@ -40,7 +40,7 @@ const Table = require('olap-cube').model.Table
 const table = new Table({
   dimensions: ['year', 'month'],
   fields: ['revenue'],
-  points: [[2016, 'Gen']],
+  points: [[2016, 'Jan']],
   data: [[100]]
 })
 
@@ -94,6 +94,7 @@ const table2 = emptyTable.addRows({
     [ 2016, 'Jan', 100 ],
     [ 2016, 'Feb', 170 ],
     [ 2016, 'Mar', 280 ],
+    [ 2017, 'Feb', 177 ],
     [ 2017, 'Apr', 410 ]
   ]
 })
@@ -109,6 +110,7 @@ console.log(table2.data) // [[ 80 ],
                          //  [ 100 ],
                          //  [ 170 ],
                          //  [ 280 ],
+                         //  [ 177 ],
                          //  [ 410 ]]
 ```
 
@@ -130,14 +132,14 @@ console.log(table2.points) // [[ 2015, 'Nov' ],
                            //  [ 2017, 'Apr' ]]
 ```
 
-### `table.slice(dimension, table)`
+### `table.slice(dimension, filter)`
 
 > Slice operator picks a rectangular subset of a cube by choosing a single value of its dimensions.
 
 Consider the following example, where a slice with 2016 year is created.
 
 ```javascripts
-var table3 = table2.slice('year', 2016)
+const table3 = table2.slice('year', 2016)
 
 console.log(table3.points) // [[ 2016, 'Jan' ],
                            //  [ 2016, 'Feb' ],
@@ -146,6 +148,30 @@ console.log(table3.points) // [[ 2016, 'Jan' ],
 console.log(table3.data) // [[ 100 ],
                          //  [ 170 ],
                          //  [ 280 ]]
+```
+
+### `table.dice(selector)`
+
+> Dice operator picks a subcube by choosing a specific values of multiple dimensions.
+
+Consider the following example, where a dice excluding one month is created.
+
+```javascripts
+const onlyFebruary = (point) => point[1] !== 'Feb'
+
+const table4 = table2.dice(onlyFebruary)
+
+console.log(table4.points) // [[ 2015, 'Nov' ],
+                           //  [ 2015, 'Dec' ],
+                           //  [ 2016, 'Jan' ],
+                           //  [ 2016, 'Mar' ],
+                           //  [ 2017, 'Apr' ]]
+
+console.log(table4.data) // [[ 80 ],
+                         //  [ 90 ],
+                         //  [ 100 ],
+                         //  [ 280 ],
+                         //  [ 410 ]]
 ```
 
 ## License

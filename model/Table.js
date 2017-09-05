@@ -159,8 +159,7 @@ class Table {
   }
 
   /**
-   * Slice operator picks a rectangular subset of a cube by choosing a single
-   * value of its dimensions.
+   * Slice operator picks a rectangular subset of a cube by choosing a single value of its dimensions.
    *
    * @param {String} dimension
    * @param {*} filter
@@ -188,6 +187,29 @@ class Table {
 
     return new Table(
       Object.assign({}, structure, { points, data })
+    )
+  }
+
+  /**
+   * Dice operator picks a subcube by choosing a specific values of multiple dimensions.
+   *
+   * @param {Function} selector
+   * @returns {Object} table
+   */
+
+  dice (selector) {
+    let points = []
+    let data = []
+
+    this.points.forEach((point, i) => {
+      if (selector(point)) {
+        data.push(this.data[i])
+        points.push(this.points[i])
+      }
+    })
+
+    return new Table(
+      Object.assign({}, this.structure, { points, data })
     )
   }
 }
