@@ -30,7 +30,7 @@ All code in this section is run and tested in [this single file][test_api].
 Note also that
 
 1. Everything is immutable, all attributes are static.
-2. Operators are chainable but they always return a brand new instance.
+2. Operators are chainable and they always return a brand new instance.
 
 ### `new Table({ dimensions, fields, points, data })`
 

@@ -1,6 +1,4 @@
-'use strict'
-
-var staticProps = require('static-props')
+const staticProps = require('static-props')
 
 /**
  * OLAP table, a.k.a. cube of data.
@@ -89,7 +87,16 @@ class Table {
   }
 
   /**
-   * Every row is an object whose keys are either a dimension or a field.
+   * Add rows to table.
+   *
+   * table.addRows({
+   *   header: ['year', 'month', 'revenue'],
+   *   rows: [
+   *     [ 2016, 'Gen', 100 ],
+   *     [ 2016, 'Feb', 170 ],
+   *     [ 2016, 'Mar', 280 ]
+   *   ]
+   * })
    *
    * @param {Object} data
    * @param {Array} data.header
@@ -108,12 +115,12 @@ class Table {
       throw new TypeError('invalid header')
     }
 
-    var data = Object.assign([], this.data)
-    var points = Object.assign([], this.points)
+    const data = [...this.data]
+    const points = [...this.points]
 
     rows.forEach((row) => {
-      var point = []
-      var cells = []
+      let point = []
+      let cells = []
 
       for (let i in row) {
         const key = header[i]
@@ -138,7 +145,7 @@ class Table {
       })
 
       if (pointIndex === null) {
-        // No point was found, let's add it
+        // No point was found, let's add it.
         pointIndex = points.length
         points.push(point)
       }

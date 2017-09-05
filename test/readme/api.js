@@ -1,3 +1,5 @@
+/* eslint-disable indent */
+
 const test = require('tape')
 
 test('README API', (t) => {
@@ -53,4 +55,3 @@ test('README API', (t) => {
 
   t.end()
 })
-
