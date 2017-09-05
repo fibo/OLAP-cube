@@ -34,6 +34,12 @@ Note also that
 
 ### `new Table({ dimensions, fields, points, data })`
 
+* @param {Object} arg
+* @param {Array} arg.dimensions
+* @param {Array} arg.points
+* @param {Array} arg.fields
+* @param {Array} arg.data in the format data[pointIndex][fieldIndex]
+
 ```javascripts
 const Table = require('olap-cube').model.Table
 
@@ -82,6 +88,11 @@ console.log(table.fields) // [ 'revenue' ]
 ### `table.addRows({ header: [key1, key2, ...], rows: [row1, row2, ...]})`
 
 > Add a set of rows to the table.
+
+* @param {Object} data
+* @param {Array} data.header
+* @param {Array} data.rows
+* @returns {Object} table
 
 Every row is an object which attributes are either a dimension or a field.
 
@@ -136,6 +147,10 @@ console.log(table2.points) // [[ 2015, 'Nov' ],
 
 > Slice operator picks a rectangular subset of a cube by choosing a single value of its dimensions.
 
+* @param {String} dimension
+* @param {*} filter
+* @returns {Object} table
+
 Consider the following example, where a slice with 2016 year is created.
 
 ```javascripts
@@ -153,6 +168,9 @@ console.log(table3.data) // [[ 100 ],
 ### `table.dice(selector)`
 
 > Dice operator picks a subcube by choosing a specific values of multiple dimensions.
+
+* @param {Function} selector
+* @returns {Object} table
 
 Consider the following example, where a dice excluding one month is created.
 

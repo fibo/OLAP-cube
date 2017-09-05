@@ -87,7 +87,7 @@ class Table {
   }
 
   /**
-   * Add rows to table.
+   * Add a set of rows to the table.
    *
    * table.addRows({
    *   header: ['year', 'month', 'revenue'],
