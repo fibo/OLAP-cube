@@ -2,14 +2,17 @@
 
 > is an hypercube of data
 
-[![NPM version](https://badge.fury.io/js/olap-cube.svg)](http://badge.fury.io/js/olap-cube) [![Build Status](https://travis-ci.org/fibo/OLAP-cube.svg?branch=master)](https://travis-ci.org/fibo/OLAP-cube?branch=master) [![Dependency Status](https://david-dm.org/fibo/OLAP-cube.svg)](https://david-dm.org/fibo/OLAP-cube)
-
-[![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
-
 [Description](#description) |
 [Installation](#installation) |
 [API](#api) |
 [License](#license)
+
+[![NPM version](https://badge.fury.io/js/olap-cube.svg)](http://badge.fury.io/js/olap-cube)
+[![Build Status](https://travis-ci.org/fibo/OLAP-cube.svg?branch=master)](https://travis-ci.org/fibo/OLAP-cube?branch=master)
+[![Dependency Status](https://david-dm.org/fibo/OLAP-cube.svg)](https://david-dm.org/fibo/OLAP-cube)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+
+[![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
 ## Description
 

@@ -41,11 +41,11 @@
   "devDependencies": {
     "deep-freeze": "0.0.1",
     "pre-commit": "^1.2.2",
-    "standa": "^1.0.1",
+    "standa": "^1.1.0",
     "tape": "^4.8.0"
   },
   "dependencies": {
-    "static-props": "^1.1.0",
-    "strict-mode": "^1.1.1"
+    "static-props": "^1.1.1",
+    "strict-mode": "^1.1.2"
   }
 }
