@@ -1,3 +1,7 @@
-.*.swp
 node_modules
 npm-debug.log
+*.*.swp
+.DS_Store
+
+# Build
+dist/olap-cube.js

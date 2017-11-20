@@ -4,8 +4,11 @@
   "description": "is an hypercube of data",
   "main": "olap-cube.js",
   "scripts": {
+    "browserify": "browserify -r ./${npm_package_main}:${npm_package_name} -o dist/${npm_package_name}.js",
+    "build": "npm run browserify; npm run minify",
     "check-deps": "npm outdated",
     "lint": "standa",
+    "minify": "cd dist; uglifyjs ${npm_package_name}.js --source-map --output ${npm_package_name}.min.js --compress --mangle -b beautify=false,preamble='\"// http://g14n.info/OLAP-cube\"'; cd -",
     "postversion": "git push origin v${npm_package_version}; npm publish; git push origin master",
     "test": "NODE_PATH=. tape test/**/*.js"
   },
@@ -39,10 +42,12 @@
   },
   "homepage": "http://g14n.info/OLAP-cube",
   "devDependencies": {
+    "browserify": "^14.5.0",
     "deep-freeze": "0.0.1",
     "pre-commit": "^1.2.2",
     "standa": "^1.1.0",
-    "tape": "^4.8.0"
+    "tape": "^4.8.0",
+    "uglify-es": "^3.1.10"
   },
   "dependencies": {
     "not-defined": "^2.0.1",

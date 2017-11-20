@@ -19,10 +19,20 @@ explore and analyze. Here you will find an engine and a graphic viewer.
 
 ## Installation
 
+### Using npm
+
 With [npm] do
 
 ```bash
 npm install olap-cube
+```
+
+### Using a CDN
+
+Add this to your HTML page
+
+```html
+<script src="https://unpkg.com/sql92-json/dist/olap-cube.min.js"></script>
 ```
 
 ## API

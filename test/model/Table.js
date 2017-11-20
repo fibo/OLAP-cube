@@ -180,8 +180,6 @@ test('rollup()', (t) => {
   const dimension = 'year'
   const fields = ['profit']
   const aggregator = (profit, value) => {
-    console.log('profit', profit)
-    console.log('value', value)
     // The value array containins [ sales, expenses ]
     // profile = sales - expenses
     return [profit[0] + value[0] - value[1]]
