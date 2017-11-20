@@ -35,11 +35,11 @@ Note also that
 
 ### `new Table({ dimensions, fields, points, data })`
 
-* **@param** `{Object}` arg
-* **@param** `{Array}` arg.dimensions
-* **@param** `{Array}` arg.points
-* **@param** `{Array}` arg.fields
-* **@param** `{Array}` arg.data in the format data[pointIndex][fieldIndex]
+* **@param** `{Object}` *arg*
+* **@param** `{Array}` *arg.dimensions*
+* **@param** `{Array}` *arg.points*
+* **@param** `{Array}` *arg.fields*
+* **@param** `{Array}` *arg.data* in the format data[pointIndex][fieldIndex]
 
 ```javascript
 const Table = require('olap-cube').model.Table
@@ -98,10 +98,10 @@ console.log(table.header) // ['year', 'month', 'revenue']
 
 > Add a set of rows to the table.
 
-* **@param** `{Object}` data
-* **@param** `{Array}` data.header
-* **@param** `{Array}` data.rows
-* **@returns** `{Object}` table
+* **@param** `{Object}` *data*
+* **@param** `{Array}` *data.header*
+* **@param** `{Array}` *data.rows*
+* **@returns** `{Object}` *table*
 
 Every row is an object which attributes are either a dimension or a field.
 
@@ -170,9 +170,9 @@ console.log(table2.points) // [[ 2015, 'Nov' ],
 
 > Slice operator picks a rectangular subset of a cube by choosing a single value of its dimensions.
 
-* **@param** `{String}` dimension
-* **@param** `{*}` filter
-* **@returns** `{Object}` table
+* **@param** `{String}` *dimension*
+* **@param** `{*}` *filter*
+* **@returns** `{Object}` *table*
 
 Consider the following example, where a slice with 2016 year is created.
 
@@ -192,8 +192,8 @@ console.log(table3.data) // [[ 100 ],
 
 > Dice operator picks a subcube by choosing a specific values of multiple dimensions.
 
-* **@param** `{Function}` selector
-* **@returns** `{Object}` table
+* **@param** `{Function}` *selector*
+* **@returns** `{Object}` *table*
 
 Consider the following example, where a dice excluding one month is created.
 
@@ -219,20 +219,20 @@ console.log(table4.data) // [[ 80 ],
 
 > A roll-up involves summarizing the data along a dimension. The summarization rule might be computing totals along a hierarchy or applying a set of formulas such as "profit = sales - expenses".
 
-* **@param** `{String}` dimension
-* **@param** `{Array}` fields
-* **@param** `{Function}` aggregator reducer
-* **@returns** `{Object}` table
+* **@param** `{String}` *dimension*
+* **@param** `{Array}` *fields*
+* **@param** `{Function}` *aggregator*
+* **@param** `{*}` *initialValue* that will be passed to Array.prototype.reduce().
+* **@returns** `{Object}` *table*
 
 ```javascript
-const summation = (a, b) => a + b
-
 const table5 = new Table({
   dimensions: ['continent', 'country'],
   fields: ['numStores']
 })
 
-table5.addRows({
+// NOTA BENE: Remember that tables are immuTables ☺.
+const table6 = table5.addRows({
   header: [ 'continent', 'country', 'numStores' ],
   rows: [
     [ 'Europe', 'Norway', 20 ],
@@ -245,9 +245,20 @@ table5.addRows({
   ]
 })
 
-const table6 = table5.rollup('continent', ['numStores'], summation)
+// Input tables and rolled up table has only one field,
+// with the same name: numStores.
+// Actually the aggregator is a reducer that will receive in input an
+// array of fields from the input table, and will output an array of
+// fields to the rolled up table.
+const summation = (sum, value) => {
+  return [sum[0] + value[0]]
+}
 
-console.log(table6.rows) // [[ 'Europe', 195 ],
+const initialValue = [0]
+
+const table7 = table6.rollup('continent', ['numStores'], summation, initialValue)
+
+console.log(table7.rows) // [[ 'Europe', 195 ],
                          //  [ 'Asia', 561 ]]
 ```
 

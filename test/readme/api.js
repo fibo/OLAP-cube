@@ -16,7 +16,6 @@ test('README API', (t) => {
   t.deepEqual(table.fields, ['revenue'], 'table.fields')
   t.deepEqual(table.header, ['year', 'month', 'revenue'], 'table.header')
 
-
   const emptyTable = new Table(table.structure)
 
   // addRows
@@ -104,14 +103,16 @@ test('README API', (t) => {
 
   // Roll up.
 
-  const summation = (a, b) => a + b
+  const summation = (sum, value) => {
+    return [sum[0] + value[0]]
+  }
 
   const table5 = new Table({
     dimensions: ['continent', 'country'],
     fields: ['numStores']
   })
 
-  table5.addRows({
+  const table6 = table5.addRows({
     header: [ 'continent', 'country', 'numStores' ],
     rows: [
       [ 'Europe', 'Norway', 20 ],
@@ -124,13 +125,14 @@ test('README API', (t) => {
     ]
   })
 
-  const table6 = table5.rollup('continent', summation)
-/*
-  t.deepEqual(table6.rows, [
+  const initialValue = [0]
+
+  const table7 = table6.rollup('continent', ['numStores'], summation, initialValue)
+
+  t.deepEqual(table7.rows, [
     [ 'Europe', 195 ],
     [ 'Asia', 561 ]
   ], 'rolled up points')
-  */
 
   t.end()
 })

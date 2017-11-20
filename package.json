@@ -45,6 +45,7 @@
     "tape": "^4.8.0"
   },
   "dependencies": {
+    "not-defined": "^2.0.1",
     "static-props": "^1.1.1",
     "strict-mode": "^1.1.2"
   }

@@ -1,3 +1,4 @@
+const no = require('not-defined')
 const staticProps = require('static-props')
 
 /**
@@ -79,13 +80,17 @@ class Table {
     const enumerable = true
     staticProps(this)({ dimensions, fields }, enumerable)
 
-
     staticProps(this)({
       points,
       data,
-      header: () => dimensions.concat(fields),
-      structure: { dimensions, fields },
-      rows: () => points.map((p, i) => p.concat(data[i]))
+      structure: { dimensions, fields }
+    })
+
+    // Derived fields.
+
+    staticProps(this)({
+      header: () => this.dimensions.concat(this.fields),
+      rows: () => this.points.map((p, i) => p.concat(this.data[i]))
     })
   }
 
@@ -222,24 +227,46 @@ class Table {
    * @param {String} dimension
    * @param {Array} fields
    * @param {Function} aggregator
+   * @param {*} initialValue
    * @returns {Object} table
    */
 
-  rollup (dimension, fields, aggregator) {
+  rollup (dimension, fields, aggregator, initialValue) {
     let points = []
-    let data = []
+    let dataObj = {}
+    let rolledupData = []
+    let seen = {}
+
+    const dimensionIndex = this.structure.dimensions.indexOf(dimension)
+    const numDimensions = this.structure.dimensions.length
 
     const structure = {
       dimensions: [dimension],
       fields
     }
 
-    this.points.forEach((point, i) => {
-      console.log(point)
+    this.rows.forEach(row => {
+      // Compute points that is an array of array of strings.
+      const point = row[dimensionIndex]
+
+      if (!seen[point]) {
+        points.push([point])
+        seen[point] = true
+      }
+
+      const fields = row.slice(numDimensions)
+
+      if (no(dataObj[point])) dataObj[point] = []
+
+      dataObj[point].push(fields)
+    })
+
+    points.forEach(point => {
+      rolledupData.push(dataObj[point].reduce(aggregator, initialValue))
     })
 
     return new Table(
-      Object.assign({}, structure, { points, data })
+      Object.assign({}, structure, { points, data: rolledupData })
     )
   }
 }

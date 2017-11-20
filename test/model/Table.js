@@ -57,11 +57,11 @@ test('addRows()', (t) => {
     [[100], [170], [280]]
   )
 
-  t.deepEqual(table.rows,
-    [[2016, 'Gen', 100],
-     [2016, 'Feb', 170],
-     [2016, 'Mar', 280]]
-  )
+  t.deepEqual(table.rows, [
+    [2016, 'Gen', 100],
+    [2016, 'Feb', 170],
+    [2016, 'Mar', 280]
+  ])
 
   t.end()
 })
@@ -179,29 +179,30 @@ test('rollup()', (t) => {
 
   const dimension = 'year'
   const fields = ['profit']
-  const aggregator = () => {
-    return 0
+  const aggregator = (profit, value) => {
+    console.log('profit', profit)
+    console.log('value', value)
+    // The value array containins [ sales, expenses ]
+    // profile = sales - expenses
+    return [profit[0] + value[0] - value[1]]
   }
 
-  const rolledupTable = table.rollup(dimension, fields, aggregator)
+  const rolledupTable = table.rollup(dimension, fields, aggregator, [0])
 
   t.deepEqual(rolledupTable.structure, {
     dimensions: ['year'],
     fields: ['profit']
   })
 
-  /*
-  t.deepEqual(rolledupTable.points,
-    [[2016],
-     [2017]]
-  )
+  t.deepEqual(rolledupTable.points, [
+    [2016],
+    [2017]
+  ])
 
-  t.deepEqual(rolledupTable.data,
-    [[502],
-     [439]]
-  )
-  */
+  t.deepEqual(rolledupTable.data, [
+    [502],
+    [439]
+  ])
 
   t.end()
 })
-
