@@ -79,10 +79,13 @@ class Table {
     const enumerable = true
     staticProps(this)({ dimensions, fields }, enumerable)
 
+
     staticProps(this)({
       points,
       data,
-      structure: { dimensions, fields }
+      header: () => dimensions.concat(fields),
+      structure: { dimensions, fields },
+      rows: () => points.map((p, i) => p.concat(data[i]))
     })
   }
 
@@ -210,6 +213,33 @@ class Table {
 
     return new Table(
       Object.assign({}, this.structure, { points, data })
+    )
+  }
+
+  /**
+   * A roll-up involves summarizing the data along a dimension.
+   *
+   * @param {String} dimension
+   * @param {Array} fields
+   * @param {Function} aggregator
+   * @returns {Object} table
+   */
+
+  rollup (dimension, fields, aggregator) {
+    let points = []
+    let data = []
+
+    const structure = {
+      dimensions: [dimension],
+      fields
+    }
+
+    this.points.forEach((point, i) => {
+      console.log(point)
+    })
+
+    return new Table(
+      Object.assign({}, structure, { points, data })
     )
   }
 }

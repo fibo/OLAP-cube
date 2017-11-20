@@ -50,11 +50,17 @@ test('addRows()', (t) => {
   })
 
   t.deepEqual(table.points,
-    [ [2016, 'Gen'], [2016, 'Feb'], [2016, 'Mar'] ]
+    [[2016, 'Gen'], [2016, 'Feb'], [2016, 'Mar']]
   )
 
   t.deepEqual(table.data,
     [[100], [170], [280]]
+  )
+
+  t.deepEqual(table.rows,
+    [[2016, 'Gen', 100],
+     [2016, 'Feb', 170],
+     [2016, 'Mar', 280]]
   )
 
   t.end()
@@ -154,3 +160,48 @@ test('dice()', (t) => {
 
   t.end()
 })
+
+test('rollup()', (t) => {
+  const table = new Table({
+    dimensions: ['year', 'month'],
+    fields: ['sales', 'expenses'],
+    points: [
+      [2016, 'Gen'], [2016, 'Feb'], [2016, 'Mar'],
+      [2017, 'Gen'], [2017, 'Feb'], [2017, 'Mar']
+    ],
+    data: [
+      [100, 12], [170, 15], [280, 21],
+      [110, 11], [150, 12], [220, 18]
+    ]
+  })
+
+  deepFreeze(table)
+
+  const dimension = 'year'
+  const fields = ['profit']
+  const aggregator = () => {
+    return 0
+  }
+
+  const rolledupTable = table.rollup(dimension, fields, aggregator)
+
+  t.deepEqual(rolledupTable.structure, {
+    dimensions: ['year'],
+    fields: ['profit']
+  })
+
+  /*
+  t.deepEqual(rolledupTable.points,
+    [[2016],
+     [2017]]
+  )
+
+  t.deepEqual(rolledupTable.data,
+    [[502],
+     [439]]
+  )
+  */
+
+  t.end()
+})
+
