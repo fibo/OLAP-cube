@@ -15,7 +15,7 @@
 ## Description
 
 An [OLAP cube][OLAP_cube] is a multidimensional array of data you can
-explore and analyze. Here you will find an engine and a graphic viewer.
+explore and analyze. Here you will find an engine that could feed a graphic viewer.
 
 ## Installation
 
@@ -225,7 +225,7 @@ console.log(table4.data) // [[ 80 ],
                          //  [ 410 ]]
 ```
 
-### `table.rollup(dimension, aggregator)`
+### `table.rollup(dimension, fields, aggregator, initialValue)`
 
 > A roll-up involves summarizing the data along a dimension. The summarization rule might be computing totals along a hierarchy or applying a set of formulas such as "profit = sales - expenses".
 
