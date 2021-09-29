@@ -31,7 +31,7 @@ npm install olap-cube
 Add this to your HTML page
 
 ```html
-<script src="https://unpkg.com/sql92-json/dist/olap-cube.min.js"></script>
+<script src="https://unpkg.com/olap-cube/dist/olap-cube.min.js"></script>
 ```
 
 ## API
